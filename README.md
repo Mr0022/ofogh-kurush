@@ -2,7 +2,7 @@
 
 Daily retail demand panel (`candidate_dataset.parquet`): 1,235 products × 732 days (Jalali 1403/06/31 → 1405/06/31).
 
-## Notebook
+## Notebooks
 
 [`notebooks/eda_and_preprocessing.ipynb`](notebooks/eda_and_preprocessing.ipynb) does the following:
 
@@ -26,3 +26,14 @@ Running the notebook writes the following to `outputs/` (not committed):
 | `itransformer_moderntcn_data.npz` | scaled tensor, time marks, masks, covariates, scaler stats, split borders |
 | `panel_clean.parquet` | cleaned long panel with all quality flags |
 | `product_meta.csv` | hierarchy, demand class, scaler stats per product |
+
+### Forecasting: [`notebooks/forecasting_models.ipynb`](notebooks/forecasting_models.ipynb)
+
+This notebook forecasts sales 30 days ahead for every product from a 112-day history, and compares four methods on the same three rolling 30-day test windows:
+
+1. **Baseline:** same weekday last week.
+2. **LightGBM:** global direct multi-horizon model.
+3. **ModernTCN:** official model class from `Mr0022/ModernTCN`, cloned automatically.
+4. **TiDE.**
+
+All methods are scored by WAPE against actual sales. The notebook is ready for Colab: choose a GPU runtime and run all cells. Set the environment variable `SMOKE_TEST=1` for a one-epoch check.
